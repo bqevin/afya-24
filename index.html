@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Afya24 Dashboard</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" class="brand-logo"><img src="img/logo.png"></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Afya24 Dashboard</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#"></a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">First Aiders</h5>
+            <h6 class="left">Add a First Aider:</h6><br>
+
+            <p class="light">
+            <form name="freelanceForm" method="post">
+            <input id="name" class="validate" type="text" placeholder="Full Name"></input>
+            <input id="phone" class="validate" type="text" placeholder="Phone Number"></input>
+            </p>
+
+          <button class="btn waves-effect waves-light addFreelancer" type="submit">Submit First Aider
+            <i class="material-icons right">send</i>
+          </button>
+          </form>
+        
+          </div>
+        </div>
+
+        <div class="col s12 m6">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">call</i></h2>
+            <h5 class="center">Ambulances</h5>
+            <h6 class="left">Add an Ambulance:</h6><br>
+            <p class="light">
+            <form name="ambulanceForm" method="post">
+            	<input id="driverName" class="validate" type="text" placeholder="Name of Operator"></input>
+              <input id="driverPhone" class="validate" type="text" placeholder="Phone of Operator"></input>
+              <input id="model"  class="validate" type="text" placeholder="Model of Car"></input>
+            	<input id="regNo" class="validate" type="text" placeholder="Registration Number"></input>
+              <input id="hospital" class="validate" type="text" placeholder="Name of Hospital"></input>
+            </p>
+            <button class="btn waves-effect waves-light addAmbulance " type="submit" name="action">Submit Ambulance
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
+          </div>
+        </div>
+
+        <div class="col s12 m6">
+        <br>
+        <h5 class="left">First Aiders:</h5>
+        <br><br><br>
+    <ul class="collection" id="freelance">
+    	</ul>
+    	</div>
+
+    	<div class="col s12 m6">
+        <br>
+        <h5 class="left">Ambulances:</h5>
+        <br><br><br>
+    <ul class="collection" id="ambulance">
+
+    </ul>
+    	</div>
+
+   
+
+    </div>
+    <br>
+    <!--Map Appends here-->
+    <select id="mode">
+      <option value="DRIVING">Driving</option>
+      <option value="WALKING">Walking</option>
+      <option value="BICYCLING">Bicycling</option>
+      <option value="TRANSIT">Transit</option>
+    </select>
+    <div id="map"></div>
+
+    <!--Map Ends here-->
+
+    </div>
+
+  
+
+
+  
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="#">Afya 24</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="js/jquery.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn1EmHNrU86wCqsPQf3dBUy0EV-6mw0vU&signed_in=true&libraries=geometry&callback=initMap"
+        async defer></script>
+  <script type="text/javascript">
+        //Declare Endpoint
+        var dbRef = new Firebase('https://scrapper.firebaseio.com/');
+
+        //FREELANCERS CONTAINER
+
+        //Create holder array for objects
+        var freelanceRef = dbRef.child('freelancers');
+          freelanceRef.on("child_added", function(snap) {
+            console.log("added", snap.key, snap.val());
+            document.querySelector('#freelance').innerHTML += (retrieveFreelancers(snap.val()));
+          });
+          //save contact
+          document.querySelector('.addFreelancer').addEventListener("click", function( event ) {  
+            event.preventDefault();
+            if(document.querySelector('#name').value != '' || document.querySelector('#phone').value != '' ){
+              freelanceRef
+                .push({
+                  name: document.querySelector('#name').value,
+                  phone: document.querySelector('#phone').value
+                });
+                freelanceForm.reset();
+            } else {
+              alert('Please fill Full Names & Number!');
+            }
+          }, false);
+
+          //retrieve Blog
+          function retrieveFreelancers(free){
+            console.log(free);
+            var html = '';
+              html += '<li class="collection-item avatar">';
+              html += '<i class="material-icons circle green">insert_chart</i>';
+                html += '<span class="title">'+free.name+'</span>';
+                html += '<p>'+free.phone+'</p>';
+                html += '<a href="#!" class="secondary-content"><i class="material-icons">grade</i>';
+                html += '</a></li>';
+            return html;
+          }
+
+
+        //AMBULANCES CONTAINER
+
+          //Create holder array for objects
+        var ambRef = dbRef.child('ambulances');
+          ambRef.on("child_added", function(snap) {
+            console.log("added", snap.key, snap.val());
+            document.querySelector('#ambulance').innerHTML += (retrieveAmbulance(snap.val()));
+          });
+          //save contact
+          document.querySelector('.addAmbulance').addEventListener("click", function( event ) {  
+            event.preventDefault();
+            if(document.querySelector('#driverName').value != '' || document.querySelector('#driverPhone').value != '' ){
+              ambRef
+                .push({
+                  model: document.querySelector('#model').value,
+                  regNo: document.querySelector('#regNo').value,
+                  hospital: document.querySelector('#hospital').value,
+                  driverName: document.querySelector('#driverName').value,
+                  driverPhone: document.querySelector('#driverPhone').value
+                })
+                ambulanceForm.reset();
+            } else {
+              alert('Please fill Driver Name & Number!');
+            }
+          }, false);
+
+          //retrieve Blog
+          function retrieveAmbulance(response){
+            console.log(response);
+            var html = '';
+              html += '<li class="collection-item avatar">';
+              html += '<i class="material-icons circle">folder</i>';
+                html += '<span class="title">Model : '+response.model+'</span>';
+                html += '<p>Reg. No. '+response.regNo+'<br>'; 
+                html += 'Driver : '+response.driverName+'<br>';
+                html += 'Phone : '+response.driverPhone+'<br>';
+                html += 'Hospital : '+response.hospital+'</p>';
+                html += '<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>';
+                html += '</li>';
+            return html;
+          }
+
+
+        //Google Map APIS
+        function initMap() {
+          var directionsDisplay = new google.maps.DirectionsRenderer;
+          var directionsService = new google.maps.DirectionsService;
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: {lat: 37.77, lng: -122.447}
+          });
+          directionsDisplay.setMap(map);
+
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+          document.getElementById('mode').addEventListener('change', function() {
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+          });
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+          var selectedMode = document.getElementById('mode').value;
+          directionsService.route({
+            origin: {lat: 37.77, lng: -122.447},  // Haight.
+            destination: {lat: 37.768, lng: -122.511},  // Ocean Beach.
+            // Note that Javascript allows us to access the constant
+            // using square brackets and a string value as its
+            // "property."
+            travelMode: google.maps.TravelMode[selectedMode]
+          }, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+              directionsDisplay.setDirections(response);
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          });
+        }
+
+      </script>
+  </body>
+</html>
